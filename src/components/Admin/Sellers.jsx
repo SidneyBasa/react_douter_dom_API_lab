@@ -58,6 +58,20 @@ const Sellers = () => {
         })
     }
 
+    const updateSeller = seller => {
+        const updatedSeller = {
+            ...seller, name:seller.name + " Updated"
+        }
+        setSellers(sellers.map(s => s.id === seller.id ? updatedSeller : s) )
+
+        axios.patch(`https://jsonplaceholder.typicode.com/users/${seller.id}`, 
+        updateSeller)
+        .catch(error => {
+            setErrors(error.message)
+            setSellers(sellers)
+        })
+    }
+
     return (
     <>
         <h3>Admin Sellers Page</h3>;
@@ -71,6 +85,7 @@ const Sellers = () => {
                     {sellers.map(seller => 
                 <tr key={seller.id}>
                     <td>{seller.name}</td>
+                    <td><button onClick={() => updateSeller(seller)}>Update</button></td>
                     <td><button onClick={() => deleteSeller(seller.id)}>Delete</button></td>
                 </tr>
                 )}
